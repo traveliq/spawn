@@ -152,6 +152,8 @@ module Spawn
         Spawn.close_resources
         # get a new connection so the parent can keep the original one
         ActiveRecord::Base.spawn_reconnect
+        # close the memcache connection so the parent can keep the original one
+        Rails.cache.reset if Rails.cache.respond_to?(:reset)
         
         # set the process name
         $0 = options[:argv] if options[:argv]
